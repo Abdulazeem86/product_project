@@ -1,0 +1,80 @@
+Feed Model:
+class Feed(AbstractUser):
+#     username = models.ForeignKey(User, on_delete=models.CASCADE)
+#     feed = models.CharField(max_length=255)
+#     posted_at = models.DateTimeField("posted date")
+
+#     def __str__(self):
+#         return self.feed
+
+
+# def login(request):
+#     return render(request, "blogs/login.html")
+
+# login method-1
+# def user_login(request):
+#     if request.method == 'POST':
+#         print('post method succeeded')
+#         form = AuthenticationForm(request.POST)
+
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password')
+#             user = authenticate(username=username, password=password)
+            
+#             print(username)
+#             print(password)
+            
+#             if user is not None:
+#                 login(request, user)
+#                 return HttpResponse("Successful Authentication")
+#                 # return HttpResponseRedirect('/home')  # Redirect to home page after login
+#             else:
+#                 print('Blank user field')
+#                 messages.error(request, 'Invalid username or password.')
+#                 return HttpResponseRedirect('/login')
+#         else:
+#             print('invalid username or password1')
+#             messages.error(request, 'Invalid username or password.')
+#             return HttpResponseRedirect('/login')
+#     else:
+#         form = AuthenticationForm()
+#         # return HttpResponse("Authentication failed")
+#         return render(request, 'blogs/login.html', {'form': form})
+
+
+wrapper function
+def signin_reqired(fn):
+    def wrapper(request,*args,**kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request,"login plzz!!!!")
+            return redirect("signin")
+        return fn(request,*args,**kwargs)
+    return wrapper
+
+
+def feed(request):
+    text = FeedModel.objects.all()
+    context = {"text": text}
+    return render(request, "blogs/feed.html", context)
+
+Given for reverse accessor issue
+# class Group(models.Model):
+#     # Define your Group model
+#     pass
+
+# class Permission(models.Model):
+#     # Define your Permission model
+#     pass
+
+Superuser:
+taurz
+taurz123
+azeemharys1@gmail.com
+
+admin
+admin123
+
+user:
+user6
+pass6@678

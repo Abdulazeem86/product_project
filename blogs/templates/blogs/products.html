@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Products</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static '/style.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color:#521515;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Products-list</a>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {% if request.user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/addproduct/">Add Product</a>
+                        </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/login/">Sign out</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="text-center">
+            <p class="pt-2">You are logged in as <strong>{{request.user}}</strong></p>
+        </div>
+
+        <div class="container justify-content-center align-items-center min-vh-100 ">
+            {%if category_product_map%}
+            {% for category, products in category_product_map.items %}
+            {% if products %}
+            <div>
+                <h3>{{ category.choice_text }}</h3>
+            </div>
+            {% endif%}
+            <div class="row rounded-5">
+                {% for product in products %}
+                
+                <div class="col-12 col-md-3 pt-2 pb-4 mb-2 rounded-4 justify-content-center align-items-center ">
+
+                    <div class="card text-center">
+                        <!-- <div class="card-image"> -->
+                        <img src="{{product.image.url}}" class="card-img-top card-image" alt="img">
+                        <!-- </div> -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.prodname}}</h5>
+                            <p class="card-text">₹{{product.price}}</p>
+                            <p class="card-text">{{product.availability}}</p>
+
+                        </div>
+                       
+                    </div>
+                    
+                </div>
+                {% endfor %}
+                <div>
+                   
+                    {% endfor %}
+                    {% else %}
+                    <p>No products available.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
