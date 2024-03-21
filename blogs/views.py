@@ -10,8 +10,8 @@ from django.contrib import messages
 from django.views.generic import CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 
-from .models import PostModel, FeedModel, ProductModel, CategoryModel
-from .forms import SignUpForm, PostForm, ProductsForm
+from .models import ProductModel, CategoryModel
+from .forms import SignUpForm, ProductsForm
 
 
 # #Generic signup
@@ -60,12 +60,6 @@ def user_login(request):
         return render(request, 'blogs/login.html',{'form':form}) 
 
 
-# class ProductView(ListView):
-#     template_name= "blogs/products.html"
-#     context_object_name='products'
-
-#     def get_queryset(self):
-#         return ProductModel.objects.all()
     
 def product_list_by_category(request):
     categories = CategoryModel.objects.all()
@@ -73,11 +67,41 @@ def product_list_by_category(request):
     category_product_map = {}
 
     for category in categories:
-        products = ProductModel.objects.filter(category=category)
+        products = ProductModel.objects.filter(category=category).order_by('price')
         print(products)
         category_product_map[category] = products
 
     return render(request, 'blogs/products.html', {'category_product_map': category_product_map})
+
+
+
+class Addprodview(CreateView):
+    template_name= "blogs/addproduct.html"
+    context_object_name='products'
+    model=ProductModel
+    form_class=ProductsForm
+    success_url=reverse_lazy('blogs:products')
+
+    def form_valid(self, form):
+        print('successful post')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print('post method failed')
+        return super().form_invalid(form)
+
+
+
+
+# class ProductView(ListView):
+#     template_name= "blogs/products.html"
+#     context_object_name='products'
+
+#     def get_queryset(self):
+#         return ProductModel.objects.all()
+
+
+
 
 # class ProductView(ListView):
 #     model=ProductModel
@@ -109,91 +133,12 @@ def product_list_by_category(request):
         
 #         return context
     
-    
-    
-
-    
-
-
-class Addprodview(CreateView):
-    template_name= "blogs/addproduct.html"
-    context_object_name='products'
-    model=ProductModel
-    form_class=ProductsForm
-    success_url=reverse_lazy('blogs:products')
-
-    def form_valid(self, form):
-        print('successful post')
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        print('post method failed')
-        return super().form_invalid(form)
 
 
 
 
 
-def feed_input(request):
-    feeds= PostModel.objects.all()
-    if request.method == 'POST':
-        print('post method')
-        form = PostForm(request.POST)
-        if form.is_valid():
-            print('successful post')
-            form.save()  
-            return render(request, 'blogs/home.html', {'feeds': feeds})
-    else:
-        form = PostForm()
-        print('post method failed')
-    print("render method called")
-    return render(request, 'blogs/home.html', {'form': form, 'feeds':feeds})
 
-
-
-
-
-class FeedView(ListView):
-    template_name= "blogs/feed.html"
-    context_object_name = "text"
-
-    def get_queryset(self):
-        return FeedModel.objects.all()
-    
-
-
-
-
-class FeedInputView(CreateView):
-    model = PostModel
-    form_class = PostForm
-    template_name = 'blogs/homegeneric.html'
-    success_url = reverse_lazy('blogs:homegeneric') 
-
-    def form_valid(self, form):
-        print('successful post')
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        print('post method failed')
-        return super().form_invalid(form)
-
-    def get_context_data(self, **kwargs): #Here in the context method works without **kwargs but added as an optional input for future needs)
-        context = super().get_context_data(**kwargs) 
-        context['feeds'] = PostModel.objects.all().order_by('created_at')[::-1]
-        return context
-    
-    
-
-
-
-    
-
-
-
-
-
-    
 
 
 

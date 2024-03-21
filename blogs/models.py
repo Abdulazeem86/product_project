@@ -32,21 +32,4 @@ class ProductModel(models.Model):
 
 
 
-
-class PostModel(models.Model):
-    feed = models.TextField(max_length=1000)
-    image = models.ImageField(upload_to='', blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Post #{self.id}'
-
-
-
-
-class FeedModel(models.Model):
-    text = models.TextField(max_length=255)
-
-    def __str__(self):
-        return self.text
     
