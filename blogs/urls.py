@@ -13,5 +13,9 @@ urlpatterns = [
         
     path('products/', views.product_list_by_category, name='products'),
     
-    path('addproduct/', views.Addprodview.as_view(), name='addproduct')
+    path('addproduct/', views.AddprodView.as_view(), name='addproduct'),
+
+    path('productspec/', views.specification, name='productspec'),
+
+    path('signout/', views.sign_out, name='signout'),
    ]
