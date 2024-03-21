@@ -1,12 +1,13 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from typing import Any
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth import login, authenticate, get_user_model, logout
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-
 from django.views.generic import CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 
@@ -60,7 +61,7 @@ def user_login(request):
         return render(request, 'blogs/login.html',{'form':form}) 
 
 
-    
+@login_required  
 def product_list_by_category(request):
     categories = CategoryModel.objects.all()
     print(categories)
@@ -75,7 +76,7 @@ def product_list_by_category(request):
 
 
 
-class Addprodview(CreateView):
+class AddprodView(LoginRequiredMixin, CreateView):
     template_name= "blogs/addproduct.html"
     context_object_name='products'
     model=ProductModel
@@ -89,6 +90,15 @@ class Addprodview(CreateView):
     def form_invalid(self, form):
         print('post method failed')
         return super().form_invalid(form)
+
+
+def specification(request):
+        return render(request, 'blogs/productspec.html')
+
+
+def sign_out(request):
+    logout(request)
+    return HttpResponseRedirect('/login/')  # Redirect to the login page
 
 
 

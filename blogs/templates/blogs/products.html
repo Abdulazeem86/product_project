@@ -6,7 +6,7 @@
 
     {% load static %}
 
-    <link rel="stylesheet" type="text/css" href="{% static '/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blogs/style.css' %}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -15,7 +15,7 @@
 
 <body>
     <div>
-
+        
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color:#521515;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Products-list</a>
@@ -30,7 +30,7 @@
                         {% endif %}
 
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/login/">Sign out</a>
+                            <a class="nav-link active" aria-current="page" href="/signout/">Sign out</a>
                         </li>
 
                     </ul>
@@ -52,10 +52,11 @@
             {% endif%}
             <div class="row rounded-5">
                 {% for product in products %}
-                
-                <div class="col-12 col-md-3 pt-2 pb-4 mb-2 rounded-4 justify-content-center align-items-center ">
 
-                    <div class="card text-center">
+                <div class="col-12 col-md-3 pt-2 pb-4 mb-2 rounded-4 justify-content-center align-items-center">
+
+                    <div class="card text-center product-card-class" id="product-card">
+                
                         <!-- <div class="card-image"> -->
                         <img src="{{product.image.url}}" class="card-img-top card-image" alt="img">
                         <!-- </div> -->
@@ -65,13 +66,13 @@
                             <p class="card-text">{{product.availability}}</p>
 
                         </div>
-                       
+
                     </div>
-                    
+
                 </div>
                 {% endfor %}
                 <div>
-                   
+
                     {% endfor %}
                     {% else %}
                     <p>No products available.</p>
@@ -82,6 +83,8 @@
 
         </div>
     </div>
+    <script src="{% static 'js/product.js'%}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
