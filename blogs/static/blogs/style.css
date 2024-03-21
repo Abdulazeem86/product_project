@@ -1,6 +1,8 @@
 body{
     font-family: 'Poppins','sans-serif';
     background: linear-gradient(#f5f3f3,#edeff9 )
+    /* background: url('images/bgimg.jpg') no-repeat; */
+    /* background-size: cover; */
 }
 
 .box-area{
