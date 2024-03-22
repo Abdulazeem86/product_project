@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, get_user_model, logout
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.views.generic import CreateView, ListView, DetailView
@@ -53,26 +53,25 @@ def user_login(request):
         else:
             print('user none')
             messages.error(request, 'Invalid username or password.')
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/')
     else:
         print('back to the start')
         form = AuthenticationForm()
         # If it's a GET request, display the login form
         return render(request, 'blogs/login.html',{'form':form}) 
 
-
-@login_required  
+# @login_required  
 def product_list_by_category(request):
     categories = CategoryModel.objects.all()
-    print(categories)
     category_product_map = {}
 
     for category in categories:
         products = ProductModel.objects.filter(category=category).order_by('price')
-        print(products)
         category_product_map[category] = products
 
     return render(request, 'blogs/products.html', {'category_product_map': category_product_map})
+
+
 
 
 
@@ -98,7 +97,28 @@ def specification(request):
 
 def sign_out(request):
     logout(request)
-    return HttpResponseRedirect('/login/')  # Redirect to the login page
+    return HttpResponseRedirect('/')  # Redirect to the login page
+
+
+
+
+#Better code to fetch products acc. to category without multiple database queries
+#Use django's prefetch_related or select_related
+#Here the problem is that the returned dictionary is a list of category sorted based on the price of the items.
+#We actually need a list of products filtered by price. For that the 'categories_with_products' need to be filtered based on category and the order by price.
+#Code need to be modified
+    
+# @login_required
+# def product_list_by_category(request):
+#     try:
+#         # Retrieve all categories with related products ordered by price
+#         categories_with_products = CategoryModel.objects.prefetch_related('productmodel_set').order_by('productmodel__price')
+#     except CategoryModel.DoesNotExist:
+#         # Handle the case where no categories are found
+#         categories_with_products = []
+
+#     return render(request, 'blogs/products.html', {'categories_with_products': categories_with_products})
+
 
 
 
