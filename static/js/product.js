@@ -12,13 +12,17 @@
 // Using jquery to minimise/simplify the above code
 
 $(document).ready(function() {
-    $('.product-card-class').on('click', function () {
+    $('#product-card').on('click', function () {
         window.location.href = '/productspec/';
     })
 })
 
 
-
+$(document).ready(function(){
+    $('.product-card-class').on('click', function(){
+        window.location.href = '/productspec/'
+    })
+})
 
 
 
